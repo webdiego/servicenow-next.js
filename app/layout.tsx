@@ -1,19 +1,33 @@
 import type { Metadata } from "next";
 import "@/app/globals.css"; // <- obbligatorio
-
+// No need to import RootLayoutProps; define the props type inline
 export const metadata: Metadata = {
   title: "ServiceNow Next.js",
   description: "A Next.js project with ServiceNow integration",
 };
 
+import { ThemeProvider } from "@/app/components/theme-provider";
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <>
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </>
   );
 }

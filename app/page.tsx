@@ -12,10 +12,11 @@ type Incident = {
   category?: string;
   subcategory?: string;
 };
+import NavBar from "./components/NavBar";
 import { DataTable } from "./components/incidents/data-table";
 import { columns } from "./components/incidents/columns";
 import ButtonCreateIncident from "./components/ButtonCreateIncident";
-import Image from "next/image";
+
 async function getIncidents(): Promise<Incident[]> {
   const res = await fetch(
     "https://dev313524.service-now.com/api/now/table/incident",
@@ -51,27 +52,8 @@ export default async function Home() {
   }
 
   return (
-    <div
-      className="
-       container mx-2 auto p-4"
-    >
-      <div>
-        <Image
-          className="mb-6"
-          src="/image.png"
-          alt="ServiceNow Logo"
-          width={200}
-          height={100}
-        />
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h1 className="text-2xl font-bold mb-2">Incidents</h1>
-            <p className="mb-4">List of incidents fetched from ServiceNow</p>
-          </div>
-          <ButtonCreateIncident />
-        </div>
-      </div>
-
+    <div className="container mx-auto  auto p-4">
+      <NavBar />
       <DataTable columns={columns} data={incidents} />
     </div>
   );

@@ -12,10 +12,7 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
 } from "@/app/components/ui/pagination";
 import {
   Table,

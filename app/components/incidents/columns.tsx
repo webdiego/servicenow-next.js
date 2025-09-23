@@ -3,18 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/app/components/ui/button";
 import { ArrowUp, ArrowDown } from "lucide-react";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Incident = {
-  number: string;
-  state: string;
-  short_description: string;
-  opened_at: string;
-  priority: string;
-  impact: string;
-  urgency: string;
-  sys_id: string;
-};
+import { Incident } from "@/app/types/incident";
+
+// Example data
 // {
 
 //     made_sla: 'true',
@@ -121,32 +112,26 @@ export type Incident = {
 //     location: '',
 //     category: 'inquiry'
 //   }
+import { formatDate, displayState, dateSorting } from "@/lib/table";
 
-const formatDate = (dateString: string | undefined) => {
-  if (!dateString) return "-";
-  const iso = dateString.replace(" ", "T");
-  const date = new Date(iso);
-  if (isNaN(date.getTime())) return dateString;
-  return date.toLocaleDateString("it-IT");
-};
+import type { Column } from "@tanstack/react-table";
 
-// custom sorting function
-import { Row } from "@tanstack/react-table";
-
-const dateSorting = (
-  rowA: Row<Incident>,
-  rowB: Row<Incident>,
-  columnId: string
-) => {
-  const a = new Date(rowA.getValue(columnId));
-  const b = new Date(rowB.getValue(columnId));
-
-  if (isNaN(a.getTime())) return 1;
-  if (isNaN(b.getTime())) return -1;
-
-  return a.getTime() - b.getTime();
-};
-
+function sortColumn(column: Column<Incident, unknown>, label: string) {
+  const sorted = column.getIsSorted(); // "asc" | "desc" | false
+  return (
+    <Button
+      variant={"sorting"}
+      onClick={() => column.toggleSorting(sorted === "asc")}
+    >
+      {label}
+      {sorted === "asc" ? (
+        <ArrowUp className="ml-2 h-4 w-4" />
+      ) : (
+        <ArrowDown className="ml-2 h-4 w-4" />
+      )}
+    </Button>
+  );
+}
 export const columns: ColumnDef<Incident>[] = [
   {
     accessorKey: "number",
@@ -154,8 +139,24 @@ export const columns: ColumnDef<Incident>[] = [
   },
   {
     accessorKey: "state",
-    header: "State",
+
+    cell: ({ row }) => {
+      const state = row.original.state;
+      const [text, color] = displayState(state);
+
+      return (
+        <span
+          className={`inline-block px-2 py-1 text-xs font-medium rounded-full text-white ${color}`}
+        >
+          {text}
+        </span>
+      );
+    },
+    header: ({ column }) => {
+      return sortColumn(column, "State");
+    },
   },
+
   {
     accessorKey: "short_description",
     header: "Short Description",
@@ -165,20 +166,7 @@ export const columns: ColumnDef<Incident>[] = [
     enableSorting: true,
     sortingFn: dateSorting,
     header: ({ column }) => {
-      const sorted = column.getIsSorted(); // "asc" | "desc" | false
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(sorted === "asc")}
-        >
-          Opened At
-          {sorted === "asc" ? (
-            <ArrowUp className="ml-2 h-4 w-4" />
-          ) : (
-            <ArrowDown className="ml-2 h-4 w-4" />
-          )}
-        </Button>
-      );
+      return sortColumn(column, "Opened At");
     },
     cell: ({ row }) => (
       <div className="max-w-xs truncate" title={row.original.opened_at}>
@@ -195,29 +183,32 @@ export const columns: ColumnDef<Incident>[] = [
       return a.localeCompare(b);
     },
     header: ({ column }) => {
-      const sortedPriority = column.getIsSorted();
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(sortedPriority === "asc")}
-        >
-          Priority
-          {sortedPriority === "asc" ? (
-            <ArrowUp className="ml-2 h-4 w-4" />
-          ) : (
-            <ArrowDown className="ml-2 h-4 w-4" />
-          )}
-        </Button>
-      );
+      return sortColumn(column, "Priority");
     },
   },
   {
     accessorKey: "impact",
-    header: "Impact",
+    enableSorting: true,
+    sortingFn: (rowA, rowB) => {
+      const a: string = rowA.getValue("impact");
+      const b: string = rowB.getValue("impact");
+      return a.localeCompare(b);
+    },
+    header: ({ column }) => {
+      return sortColumn(column, "Impact");
+    },
   },
   {
     accessorKey: "urgency",
-    header: "Urgency",
+    enableSorting: true,
+    sortingFn: (rowA, rowB) => {
+      const a: string = rowA.getValue("urgency");
+      const b: string = rowB.getValue("urgency");
+      return a.localeCompare(b);
+    },
+    header: ({ column }) => {
+      return sortColumn(column, "Urgency");
+    },
   },
   {
     accessorKey: "category",
