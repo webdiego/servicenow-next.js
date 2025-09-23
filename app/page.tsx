@@ -42,17 +42,20 @@ export default async function Home() {
     .map((incident) => incident.state)
     .filter((state) => state !== undefined && state !== null);
   return (
-    <div className="container mx-auto  auto p-4">
+    <>
       <NavBar />
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h1 className="text-2xl font-bold">Incidents</h1>
-          <p className="mb-4">List of incidents fetched from ServiceNow</p>
+
+      <div className="container mx-auto  auto p-4">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-2xl font-bold">Incidents</h1>
+            <p className="mb-4">List of incidents fetched from ServiceNow</p>
+          </div>
+          <CreateIncident />
         </div>
-        <CreateIncident />
+        <DataTable columns={columns} data={incidents} />
+        <StateChart data={incidentState} />
       </div>
-      <DataTable columns={columns} data={incidents} />
-      <StateChart data={incidentState} />
-    </div>
+    </>
   );
 }

@@ -20,6 +20,8 @@ const buttonVariants = cva(
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         sorting: "bg-transparent hover:bg-muted/20 cursor-pointer",
+        serviceNow:
+          "bg-[#032D42] text-white hover:bg-[#021E2F] focus-visible:ring-[#021E2F] cursor-pointer",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

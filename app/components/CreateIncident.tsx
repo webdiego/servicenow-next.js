@@ -59,7 +59,6 @@ const CATEGORY_OPTIONS: Record<string, string[]> = {
 export default function CreateIncident() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const {
     register,
@@ -94,7 +93,6 @@ export default function CreateIncident() {
 
       reset(defaultValues);
       setOpen(false);
-      setSuccess("Incident created successfully");
       window.location.reload();
     } catch (err) {
       console.error(err);
@@ -110,7 +108,7 @@ export default function CreateIncident() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Create incident</Button>
+        <Button variant="serviceNow">Create incident</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>

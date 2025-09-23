@@ -1,18 +1,11 @@
 import React from "react";
 import { ToggleTheme } from "./ToggleTheme";
-import Image from "next/image";
-
+import ServicenowLogo from "./ServicenowLogo";
 export default function NavBar() {
   return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <Image
-          className="mb-6"
-          src="/image.png"
-          alt="ServiceNow Logo"
-          width={200}
-          height={100}
-        />
+    <div className="bg-[#032D42]  p-4">
+      <div className="flex items-start justify-between container mx-auto">
+        <ServicenowLogo className="w-44  h-10" />
         <ToggleTheme />
       </div>
     </div>
