@@ -27,11 +27,12 @@ import parse from "html-react-parser";
 export default async function KnowledgeArticlePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   let knowledge: Knowledge;
   try {
-    knowledge = await getKnowledgeById(params.id);
+    knowledge = await getKnowledgeById(id);
 
     console.log(Object.values(knowledge));
   } catch (error) {
