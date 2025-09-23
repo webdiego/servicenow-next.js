@@ -11,7 +11,7 @@ export default function Loading() {
         height={300}
       />
       <div>
-        <p className="text-sm mt-5">Loading incidents...</p>
+        <p className="text-sm mt-5">Loading...</p>
       </div>
     </div>
   );
