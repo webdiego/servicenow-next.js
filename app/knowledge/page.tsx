@@ -21,12 +21,7 @@ async function getKnowledge(): Promise<Knowledge[]> {
   const data = await res.json();
   return data.result;
 }
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-} from "@/app/components/ui/card";
+import { Card, CardContent } from "@/app/components/ui/card";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
 

@@ -24,7 +24,11 @@ async function getKnowledgeById(id: string): Promise<Knowledge> {
 
 import parse from "html-react-parser";
 
-export default async function page({ params }: { params: { id: string } }) {
+export default async function KnowledgeArticlePage({
+  params,
+}: {
+  params: { id: string };
+}) {
   let knowledge: Knowledge;
   try {
     knowledge = await getKnowledgeById(params.id);
