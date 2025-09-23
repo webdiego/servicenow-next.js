@@ -43,40 +43,23 @@ const defaultValues: FormState = {
   impact: "3",
   urgency: "3",
   priority: "4",
-  category: "Hardware",
-  subcategory: "Desktop/Laptop",
+  category: "hardware",
+  subcategory: "cpu",
 };
 // TODO: fetch these from ServiceNow metadata API
 
 const CATEGORY_OPTIONS: Record<string, string[]> = {
-  Hardware: ["Desktop/Laptop", "Printer", "Mobile Device", "Peripheral"],
-  Software: ["Operating System", "Application", "Database", "Middleware"],
-  Network: ["Wi-Fi", "VPN", "LAN", "WAN"],
-  Database: ["SQL Server", "Oracle", "MySQL", "MongoDB"],
-  Application: ["Email", "CRM", "ERP", "Collaboration Tools"],
-  Request: [
-    "Access Request",
-    "Software Installation",
-    "Hardware Request",
-    "Service Activation",
-  ],
-  Inquiry: [
-    "Information Request",
-    "Policy Inquiry",
-    "Service Status",
-    "Procedure Inquiry",
-  ],
-  Complaint: [
-    "Service Quality",
-    "Employee Behavior",
-    "Response Time",
-    "System Performance",
-  ],
+  hardware: ["cpu", "disk", "keyboard", "memory", "monitor", "mouse"],
+  software: ["email", "operating system"],
+  network: ["dhcp", "dns", "ip address", "vpn", "wireless"],
+  database: ["db2", "oracle", "sql server"],
+  inquiry: ["antivirus", "email", "internal application"],
 };
 
 export default function CreateIncident() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const {
     register,
@@ -101,11 +84,7 @@ export default function CreateIncident() {
       const res = await fetch("/api/incidents", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          category: values.category?.toLocaleLowerCase(),
-          subcategory: values.subcategory?.toLocaleLowerCase(),
-        }),
+        body: JSON.stringify(values),
       });
 
       if (!res.ok) {
@@ -113,10 +92,10 @@ export default function CreateIncident() {
         throw new Error(text || res.statusText || "Request failed");
       }
 
-      const created = await res.json();
-      alert(`Incident created ${{ created }}`);
       reset(defaultValues);
       setOpen(false);
+      setSuccess("Incident created successfully");
+      window.location.reload();
     } catch (err) {
       console.error(err);
       setError(
@@ -292,7 +271,7 @@ export default function CreateIncident() {
                     value={field.value}
                   >
                     <SelectTrigger
-                      className="w-full"
+                      className="w-full capitalize"
                       id="category"
                       disabled={isSubmitting}
                     >
@@ -300,7 +279,11 @@ export default function CreateIncident() {
                     </SelectTrigger>
                     <SelectContent>
                       {categoryKeys.map((cat) => (
-                        <SelectItem key={cat} value={cat}>
+                        <SelectItem
+                          key={cat}
+                          value={cat}
+                          className="capitalize"
+                        >
                           {cat}
                         </SelectItem>
                       ))}
@@ -324,7 +307,7 @@ export default function CreateIncident() {
                   return (
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger
-                        className="w-full"
+                        className="w-full capitalize"
                         id="subcategory"
                         disabled={isSubmitting || subOptions.length === 0}
                       >
@@ -336,7 +319,7 @@ export default function CreateIncident() {
                           }
                         />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="capitalize">
                         {subOptions.length === 0 ? (
                           <SelectItem value="" disabled>
                             Select category first
