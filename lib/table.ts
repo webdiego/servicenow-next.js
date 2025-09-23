@@ -34,6 +34,10 @@ export const displayState = (state: string) => {
       color = "bg-gray-700 dark:bg-gray-600";
       text = "Closed";
       break;
+    case "8":
+      color = "bg-red-500 dark:bg-red-600";
+      text = "Canceled";
+      break;
     default:
       break;
   }

@@ -1,22 +1,10 @@
-type Incident = {
-  number: string;
-  state: string;
-  short_description: string;
-  opened_at: string;
-  priority: string;
-  impact: string;
-  urgency: string;
-  sys_id: string;
-  active: string;
-  description?: string;
-  category?: string;
-  subcategory?: string;
-};
+import { Incident } from "./types/incident";
 import NavBar from "./components/NavBar";
-import { DataTable } from "./components/incidents/data-table";
-import { columns } from "./components/incidents/columns";
-import ButtonCreateIncident from "./components/ButtonCreateIncident";
-
+import { DataTable } from "./components/incidents-table/data-table";
+import { columns } from "./components/incidents-table/columns";
+// import ButtonCreateIncident from "./components/ButtonCreateIncident";
+import { StateChart } from "./components/charts/stateChart";
+import { Suspense } from "react";
 async function getIncidents(): Promise<Incident[]> {
   const res = await fetch(
     "https://dev313524.service-now.com/api/now/table/incident",
@@ -51,10 +39,14 @@ export default async function Home() {
     );
   }
 
+  const incidentState = incidents
+    .map((incident) => incident.state)
+    .filter((state) => state !== undefined && state !== null);
   return (
     <div className="container mx-auto  auto p-4">
       <NavBar />
       <DataTable columns={columns} data={incidents} />
+      <StateChart data={incidentState} />
     </div>
   );
 }

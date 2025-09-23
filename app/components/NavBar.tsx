@@ -1,6 +1,7 @@
 import React from "react";
 import { ToggleTheme } from "./ToggleTheme";
 import Image from "next/image";
+
 export default function NavBar() {
   return (
     <div>
