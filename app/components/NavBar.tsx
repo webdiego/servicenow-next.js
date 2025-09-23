@@ -15,10 +15,6 @@ export default function NavBar() {
         />
         <ToggleTheme />
       </div>
-      <div>
-        <h1 className="text-2xl font-bold">Incidents</h1>
-        <p className="mb-4">List of incidents fetched from ServiceNow</p>
-      </div>
     </div>
   );
 }

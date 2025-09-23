@@ -2,9 +2,8 @@ import { Incident } from "./types/incident";
 import NavBar from "./components/NavBar";
 import { DataTable } from "./components/incidents-table/data-table";
 import { columns } from "./components/incidents-table/columns";
-// import ButtonCreateIncident from "./components/ButtonCreateIncident";
+import CreateIncident from "./components/CreateIncident";
 import { StateChart } from "./components/charts/stateChart";
-import { Suspense } from "react";
 async function getIncidents(): Promise<Incident[]> {
   const res = await fetch(
     "https://dev313524.service-now.com/api/now/table/incident",
@@ -45,6 +44,13 @@ export default async function Home() {
   return (
     <div className="container mx-auto  auto p-4">
       <NavBar />
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h1 className="text-2xl font-bold">Incidents</h1>
+          <p className="mb-4">List of incidents fetched from ServiceNow</p>
+        </div>
+        <CreateIncident />
+      </div>
       <DataTable columns={columns} data={incidents} />
       <StateChart data={incidentState} />
     </div>
