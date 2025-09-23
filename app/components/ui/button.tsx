@@ -21,7 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         sorting: "bg-transparent hover:bg-muted/20 cursor-pointer",
         serviceNow:
-          "bg-[#032D42] text-white hover:bg-[#021E2F] focus-visible:ring-[#021E2F] cursor-pointer",
+          "bg-[#032D42] text-white hover:bg-[#021E2F] focus-visible:ring-[#021E2F] cursor-pointer dark:bg-white dark:hover:bg-[#021E2F] dark:text-primary-foreground dark:hover:bg-primary/90 dark:focus-visible:ring-[#021E2F]",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

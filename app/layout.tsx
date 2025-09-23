@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "ServiceNow Next.js",
   description: "A Next.js project with ServiceNow integration",
 };
+import NavBar from "@/app/components/NavBar";
 
 import { ThemeProvider } from "@/app/components/theme-provider";
 
@@ -24,6 +25,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <NavBar />
             {children}
           </ThemeProvider>
         </body>
