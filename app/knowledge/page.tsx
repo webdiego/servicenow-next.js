@@ -1,5 +1,7 @@
 import parse from "html-react-parser";
 import { Knowledge } from "@/app/types/knowledge";
+import Link from "next/link";
+import { Button } from "../components/ui/button";
 
 async function getKnowledge(): Promise<Knowledge[]> {
   const res = await fetch(
@@ -21,9 +23,6 @@ async function getKnowledge(): Promise<Knowledge[]> {
   const data = await res.json();
   return data.result;
 }
-import { Card, CardContent } from "@/app/components/ui/card";
-import Link from "next/link";
-import { Button } from "../components/ui/button";
 
 export default async function KnowledgePage() {
   let knowledge: Knowledge[] = [];
@@ -50,38 +49,49 @@ export default async function KnowledgePage() {
           </p>
         </div>
         {knowledge.length > 0 && (
-          <div className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-slate-300">
             Total Knowledge Articles: {knowledge.length}
-          </div>
+          </p>
         )}
         {knowledge.length === 0 && (
-          <div className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-slate-300">
             No Knowledge Articles found.
-          </div>
+          </p>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3  gap-4 w-full mt-4">
           {knowledge.length > 0 &&
-            knowledge.map((item) => (
-              <Card key={item.sys_id}>
-                <CardContent>
+            knowledge
+              .filter((item) => item.text != "")
+              .map((item) => (
+                <div
+                  key={item.sys_id}
+                  className="border p-4 rounded-md shadow bg-[#f9f9f9] dark:bg-[#1f2937]  flex flex-col justify-between"
+                >
+                  <h2 className="text-sm font-medium">
+                    {parse(item.short_description)}
+                  </h2>
+
                   <div>
-                    <h2 className="text-sm font-medium">
-                      {parse(item.short_description)}
-                    </h2>
-
-                    <div className="text-xs text-gray-600 mt-2">
-                      <strong>Category:</strong> {item.topic}
+                    <div className="text-xs text-gray-600 dark:text-slate-300 flex items-center gap-2 mt-1">
+                      <p>Category:</p>
+                      <p className="bg-[#0A4A6D] px-2 rounded-full text-white">
+                        {item.topic}
+                      </p>
                     </div>
-
-                    <Link href={`/knowledge/${item.sys_id}`}>
-                      <Button className="mt-4" variant="outline">
-                        Read More
-                      </Button>
-                    </Link>
+                    <div className="grid place-items-end">
+                      <Link href={`/knowledge/${item.sys_id}`}>
+                        <Button
+                          size="xs"
+                          className="cursor-pointer text-xs"
+                          variant="serviceNow"
+                        >
+                          Read More
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+              ))}
         </div>
       </div>
     </div>

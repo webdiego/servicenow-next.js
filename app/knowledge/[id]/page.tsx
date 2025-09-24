@@ -33,8 +33,6 @@ export default async function KnowledgeArticlePage({
   let knowledge: Knowledge;
   try {
     knowledge = await getKnowledgeById(id);
-
-    console.log(Object.values(knowledge));
   } catch (error) {
     return (
       <div className="text-red-600 font-bold">
